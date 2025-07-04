@@ -55,3 +55,14 @@ We designed a hybrid interface (text + sliders) that collects user inputs and pe
      ├── Journaling Prompt Generator
      ↓
 [ Results → Streamlit UI + CSV/Firebase Save ]
+
+![image](https://github.com/user-attachments/assets/ba68a281-e74a-43d4-9a21-6645efcef07c)
+![image](https://github.com/user-attachments/assets/7342e282-b233-43f5-bcf2-d5d9d7a842b1)
+![image](https://github.com/user-attachments/assets/2f0bd4d2-d549-4ab4-87ed-216796e6a48f)
+![image](https://github.com/user-attachments/assets/c37ff88a-d79d-4e29-9867-3ecf8863f30c)
+![image](https://github.com/user-attachments/assets/21b98af9-12d2-4aa1-8247-01cb3b11a478)
+
+
+
+
+
