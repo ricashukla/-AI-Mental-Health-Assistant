@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Mental Health Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">AI Mental Health Assistant</p>
+          <h1>Check in, reflect, and get gentle guidance.</h1>
+          <p class="subtitle">
+            Share how you are feeling, complete the PHQ-9 prompts, and receive an empathetic summary with next-step suggestions.
+          </p>
+        </div>
+        <div class="hero-card">
+          <h2>Quick Tips</h2>
+          <ul>
+            <li>Respond in your own words for better insights.</li>
+            <li>Use the journal to capture what feels most important today.</li>
+            <li>If you feel unsafe, contact a local professional immediately.</li>
+          </ul>
+        </div>
+      </header>
+
+      <section class="panel">
+        <h2>How are you feeling today?</h2>
+        <textarea id="userStatement" rows="3" placeholder="I feel better than yesterday..."></textarea>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>PHQ-9 Check-in</h2>
+          <p>Rate each question and optionally add more context.</p>
+        </div>
+        <div id="phqQuestions" class="question-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Journal Reflection</h2>
+        <textarea id="journalText" rows="5" placeholder="Write about your day or what feels most important."></textarea>
+      </section>
+
+      <section class="panel actions">
+        <button id="analyzeBtn">Analyze my check-in</button>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section id="results" class="panel results hidden">
+        <h2>Your Mental Health Summary</h2>
+        <div class="results-grid">
+          <div>
+            <h3>PHQ-9 Severity</h3>
+            <p id="severity" class="pill"></p>
+          </div>
+          <div>
+            <h3>Detected Emotions</h3>
+            <p id="emotions"></p>
+          </div>
+        </div>
+        <div class="result-block">
+          <h3>Summary</h3>
+          <p id="summary"></p>
+        </div>
+        <div class="result-block">
+          <h3>Therapy Suggestion</h3>
+          <p id="activity"></p>
+        </div>
+        <div class="result-block">
+          <h3>Journaling Prompt</h3>
+          <p id="prompt"></p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

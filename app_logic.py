@@ -10,8 +10,11 @@ from transformers import pipeline
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device set to use {device}")
 
-# Load PHQ-9 model (adjusted path to work from backend/models/)
-model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models", "phq9_nlp_model.pkl"))
+# Load PHQ-9 model (supports local file or models/ folder)
+local_model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "phq9_nlp_model.pkl"))
+models_dir_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "models", "phq9_nlp_model.pkl"))
+model_path = local_model_path if os.path.exists(local_model_path) else models_dir_path
+
 try:
     phq9_text_model = joblib.load(model_path)
 except FileNotFoundError:
