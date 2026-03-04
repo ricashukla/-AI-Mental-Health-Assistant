@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from app_logic import mental_health_assistant, save_journal_entry
+from app_logic import emotion_classifier, mental_health_assistant, phq9_text_model, save_journal_entry, sentence_model
 
 app = FastAPI(title="Saathi MVP API", version="0.1.0")
 
@@ -16,7 +16,14 @@ class AnalysisInput(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "models": {
+            "phq9_model_loaded": phq9_text_model is not None,
+            "sentence_model_loaded": sentence_model is not None,
+            "emotion_model_loaded": emotion_classifier is not None,
+        },
+    }
 
 
 @app.post("/analyze")

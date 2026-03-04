@@ -58,6 +58,20 @@ def _detect_crisis(text: str) -> bool:
     return any(keyword in normalized for keyword in CRISIS_KEYWORDS)
 
 
+
+
+def _fallback_emotions(text: str) -> List[str]:
+    lower = text.lower()
+    if any(token in lower for token in ["hopeless", "sad", "down", "cry"]):
+        return ["sadness"]
+    if any(token in lower for token in ["anxious", "panic", "worried", "overwhelmed"]):
+        return ["fear"]
+    if any(token in lower for token in ["angry", "furious", "irritated"]):
+        return ["anger"]
+    if any(token in lower for token in ["happy", "grateful", "good", "better"]):
+        return ["joy"]
+    return ["neutral"]
+
 def _mood_score(emotions: List[str]) -> int:
     weight = {
         "joy": 80,
@@ -193,7 +207,7 @@ def mental_health_assistant(user_statement, phq9_responses, journal_text=None):
         emotion_outputs = emotion_classifier(text)
         top_emotions = [label["label"] for label in emotion_outputs[0]]
     else:
-        top_emotions = ["neutral"]
+        top_emotions = _fallback_emotions(text)
 
     severity = _predict_severity(phq9_responses)
     guidance = _suggestions_for_severity(severity)

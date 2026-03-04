@@ -12,7 +12,7 @@ A startup-grade MVP backend + prototype UI for an AI-powered emotional support a
 
 ## API Endpoints
 
-- `GET /health` → service health check.
+- `GET /health` → service health check with model availability flags.
 - `POST /analyze` → emotion, severity, safety, and therapeutic response payload.
 - `POST /save_journal` → manually persist journal text to CSV history.
 
@@ -52,3 +52,10 @@ flowchart TD
 
 - STT/TTS are intentionally left pluggable so you can add Whisper + Coqui/ElevenLabs without changing core logic.
 - If a PHQ model file is unavailable, the app falls back to a lightweight heuristic severity estimator.
+
+
+### Health check example
+
+```bash
+curl http://127.0.0.1:8000/health
+```
