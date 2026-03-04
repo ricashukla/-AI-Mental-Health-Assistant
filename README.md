@@ -1,68 +1,61 @@
-# 🧠 AI Mental Health Assistant
+# 🧠 AI Mental Health Assistant (Saathi MVP)
 
-A compassionate AI-powered web application that helps users assess their mental health using PHQ-9 depression screening and emotion analysis through natural language processing. This assistant is designed to promote self-awareness, early mental health detection, and guided self-care.
+A startup-grade MVP backend + prototype UI for an AI-powered emotional support assistant.
 
----
+## Current MVP Capabilities
 
-## 🧩 Problem Statement
+- Text-first assistant flow with emotion detection and PHQ-9 severity estimation.
+- Safety layer that flags crisis/self-harm language and returns India helpline escalation guidance.
+- Therapeutic response template with empathetic, supportive language.
+- Session logging to SQLite (`data/sessions.db`) for analytics, plus optional CSV journaling history.
+- FastAPI endpoints that can be connected to STT/TTS layers next.
 
-Mental health issues like depression often go undetected due to stigma, limited access to therapists, or lack of self-awareness. Early detection is key to managing symptoms before they worsen.
+## API Endpoints
 
-The goal of this project is to create a free, accessible AI assistant that:
-- Assesses emotional well-being via text and PHQ-9 questionnaires.
-- Provides empathetic responses and therapy suggestions.
-- Encourages journaling and mental clarity through daily prompts.
-- Can potentially escalate to professionals in severe cases.
+- `GET /health` → service health check with model availability flags.
+- `POST /analyze` → emotion, severity, safety, and therapeutic response payload.
+- `POST /save_journal` → manually persist journal text to CSV history.
 
----
+### Example `POST /analyze` payload
 
-## 💡 Solution Approach
+```json
+{
+  "user_statement": "I feel overwhelmed and hopeless today",
+  "phq9_responses": [
+    "I have trouble sleeping",
+    "I feel tired and down"
+  ],
+  "journal_text": "I need help calming down."
+}
+```
 
-We designed a hybrid interface (text + sliders) that collects user inputs and performs the following:
+## Quick Start
 
-1. **Emotion Detection** — Extract emotion labels (e.g., sadness, joy, neutral).
-2. **PHQ-9 Severity Prediction** — Analyze free-text responses to the 9 PHQ questions and classify the depression severity.
-3. **Mental Health Summary** — Generate a summary with therapy suggestions.
-4. **Journaling Prompt** — Display a context-aware journaling prompt.
-5. **History Logging** — Save daily logs to CSV or Firebase (configurable).
+```bash
+pip install -r requirements.txt
+uvicorn main:app --reload
+streamlit run app.py
+```
 
----
+## Architecture (MVP)
 
-## 🛠️ Tech Stack
+```mermaid
+flowchart TD
+    User -->|Text / Voice (future)| STT
+    STT --> NLP[Emotion + PHQ + Safety]
+    NLP --> RESP[Therapeutic Response Engine]
+    RESP --> TTS
+    NLP --> DB[(SQLite + CSV Logs)]
+```
 
-| Layer | Tech |
-|-------|------|
-| 👩‍💻 Frontend | Streamlit (Python) |
-| ⚙️ Backend | FastAPI |
-| 🧠 NLP Models | Sentence-BERT (for PHQ-9), RoBERTa (for emotion) |
-| 🧪 ML Classifier | Random Forest |
-| 🗃️ History Storage | CSV (Local) |
-| 📦 Deployment-ready | Streamlit + Uvicorn |
+## Notes
 
----
-
-## 📊 Architecture & Pipeline
-
-```text
-[ User Input ]
-     ↓
-[ Streamlit Frontend ]
-     ↓
-[ FastAPI Backend ]
-     ├── Emotion Detection (RoBERTa)
-     ├── PHQ-9 Severity Classification (SBERT + RF)
-     ├── Therapy Suggestion Engine
-     ├── Journaling Prompt Generator
-     ↓
-[ Results → Streamlit UI + CSV/Firebase Save ]
-
-![image](https://github.com/user-attachments/assets/ba68a281-e74a-43d4-9a21-6645efcef07c)
-![image](https://github.com/user-attachments/assets/7342e282-b233-43f5-bcf2-d5d9d7a842b1)
-![image](https://github.com/user-attachments/assets/2f0bd4d2-d549-4ab4-87ed-216796e6a48f)
-![image](https://github.com/user-attachments/assets/c37ff88a-d79d-4e29-9867-3ecf8863f30c)
-![image](https://github.com/user-attachments/assets/21b98af9-12d2-4aa1-8247-01cb3b11a478)
+- STT/TTS are intentionally left pluggable so you can add Whisper + Coqui/ElevenLabs without changing core logic.
+- If a PHQ model file is unavailable, the app falls back to a lightweight heuristic severity estimator.
 
 
+### Health check example
 
-
-
+```bash
+curl http://127.0.0.1:8000/health
+```

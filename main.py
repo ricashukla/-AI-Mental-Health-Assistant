@@ -1,23 +1,39 @@
+from typing import List, Optional
+
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List, Optional
-from logic.app_logic import mental_health_assistant, save_journal_entry
 
-app = FastAPI()
+from app_logic import emotion_classifier, mental_health_assistant, phq9_text_model, save_journal_entry, sentence_model
+
+app = FastAPI(title="Saathi MVP API", version="0.1.0")
+
 
 class AnalysisInput(BaseModel):
     user_statement: Optional[str] = ""
     phq9_responses: Optional[List[str]] = []
     journal_text: Optional[str] = ""
 
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "models": {
+            "phq9_model_loaded": phq9_text_model is not None,
+            "sentence_model_loaded": sentence_model is not None,
+            "emotion_model_loaded": emotion_classifier is not None,
+        },
+    }
+
+
 @app.post("/analyze")
 def analyze(data: AnalysisInput):
-    result = mental_health_assistant(
+    return mental_health_assistant(
         user_statement=data.user_statement,
         phq9_responses=data.phq9_responses,
-        journal_text=data.journal_text
+        journal_text=data.journal_text,
     )
-    return result
+
 
 @app.post("/save_journal")
 def save_journal(data: AnalysisInput):
@@ -25,6 +41,6 @@ def save_journal(data: AnalysisInput):
         user_statement=data.user_statement,
         journal_text=data.journal_text or "",
         emotions=["manual-entry"],
-        severity="manual-entry"
+        severity="manual-entry",
     )
     return {"message": "Journal entry saved"}
