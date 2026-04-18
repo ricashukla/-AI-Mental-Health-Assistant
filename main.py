@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
-from logic.app_logic import mental_health_assistant, save_journal_entry
+from app_logic import mental_health_assistant, save_journal_entry
 
 app = FastAPI()
 

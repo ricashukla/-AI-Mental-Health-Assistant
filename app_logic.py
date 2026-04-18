@@ -11,7 +11,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device set to use {device}")
 
 # Load PHQ-9 model (adjusted path to work from backend/models/)
-model_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models", "phq9_nlp_model.pkl"))
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "phq9_nlp_model.pkl")
 try:
     phq9_text_model = joblib.load(model_path)
 except FileNotFoundError:
